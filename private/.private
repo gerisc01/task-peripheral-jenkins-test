@@ -1,0 +1,1 @@
+Handlers that should be stored in git but shouldn't be published anywhere should be put in the private directory.
