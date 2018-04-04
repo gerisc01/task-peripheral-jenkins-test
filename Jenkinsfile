@@ -15,9 +15,16 @@ pipeline {
       }
     }
     stage('Check for Handler Changes') {
-        steps {
-          echo "The branch for this call is $GIT_BRANCH"
-        }
+      steps {
+        echo "Finding what handlers have changed since the last git commit"
+        sh "ruby scripts/inspect_handler_changes.rb -c $GIT_PREVIOUS_SUCCESSFUL_COMMIT -l `pwd`"
+      }
+    }
+    stage('Upload Modified Handlers') {
+      when { branch 'master' }
+      steps {
+        echo "Uploading handlers to Kinetic Community and Amazon S3"
+      }
     }
   }
 }
