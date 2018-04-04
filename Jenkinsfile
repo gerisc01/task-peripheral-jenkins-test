@@ -1,7 +1,4 @@
 pipeline {
-  agent {
-    label 'base-template'
-  }
   stages {
     stage('Environment Setup') {
       steps {
