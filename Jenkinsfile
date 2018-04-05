@@ -1,8 +1,5 @@
 pipeline {
   agent any
-  environment {
-    GIT_COMMIT = ${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-GIT_PREVIOUS_COMMIT}
-  }
   stages {
     stage('Environment Setup') {
       steps {
@@ -20,7 +17,7 @@ pipeline {
     stage('Check for Handler Changes') {
       steps {
         echo "Finding what handlers have changed since the last git commit"
-        sh 'ruby scripts/inspect_handler_changes.rb -c $GIT_PREVIOUS_SUCCESSFUL_COMMIT -l "`pwd`"'
+        sh 'ruby scripts/inspect_handler_changes.rb -c $GIT_PREVIOUS_COMMIT -l "`pwd`"'
       }
     }
     stage('Upload Modified Handlers') {
