@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    GIT_COMMIT = ${$GIT_PREVIOUS_SUCCESSFUL_COMMIT:$GIT_PREVIOUS_COMMIT}
+    GIT_COMMIT = ${GIT_PREVIOUS_SUCCESSFUL_COMMIT:-GIT_PREVIOUS_COMMIT}
   }
   stages {
     stage('Environment Setup') {
