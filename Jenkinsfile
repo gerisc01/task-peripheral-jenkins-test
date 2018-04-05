@@ -15,13 +15,17 @@ pipeline {
       }
     }
     stage('Check for Handler Changes') {
+      when { expression { env.GIT_PREVIOUS_SUCCESSFUL_BUILD != null } }
       steps {
         echo "Finding what handlers have changed since the last git commit"
         sh 'ruby scripts/inspect_handler_changes.rb -c $GIT_PREVIOUS_COMMIT -l "`pwd`"'
       }
     }
     stage('Upload Modified Handlers') {
-      when { branch 'master' }
+      when { allOf {
+        branch 'master'
+        expression { env.GIT_PREVIOUS_SUCCESSFUL_BUILD != null }
+      }}
       steps {
         echo "Upload to S3 task-handlers bucket"
         withCredentials([usernamePassword(credentialsId: 'd9b3e21f-24a7-4d0b-8be8-e55eab29894f',usernameVariable: 'AWS_KEY',passwordVariable: 'AWS_SECRET')]) {
